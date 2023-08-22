@@ -6,8 +6,7 @@
 </head>
 
 <style>
-    <!-- 전체 화면   -->
-    .layout {
+    .list {
         width : 500px;
         margin : 0 auto;
         margin-top : 40px;
@@ -17,7 +16,7 @@
 </style>
 
 <body>
-    <div class="layout">
+    <div>
         <table class="list">
             <thead>
                 <tr>
@@ -37,19 +36,21 @@
                         <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
                     </td>
                 </tr>
-
+                <tr>
+                    <td></td>
+                    <td>
+                        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                            <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${page -1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+                            <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
+                        </th:block>
+                        <form th:action="@{/board/list}" method="get">
+                            <input type="text" name="searchKeyword">
+                            <button type="submit">검색</button>
+                        </form>
+                    </td>
+                </tr>
             </tbody>
         </table>
-
-        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
-            <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${page -1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
-            <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
-        </th:block>
-        <form th:action="@{/board/list}" method="get">
-            <input type="text" name="searchKeyword">
-            <button type="submit">검색</button>
-        </form>
-
     </div>
 </body>
 </html>
